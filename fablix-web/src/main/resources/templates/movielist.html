@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <title>Fablix</title>
+    <meta http-equiv="Content-Type" content="text/html;" />
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/}" href="/">Fablix</a>
+        <ul class="navbar-nav mr-auto"></ul>
+        <!--/*@thymesVar id="logged_email" type="java.lang.String"*/-->
+        <span th:text="${logged_email}" class="mx-3">email</span>
+        <a class="btn btn-outline-secondary" role="button" th:href="@{/logout}"> LOG OUT</a>
+    </nav>
+    <div class="btn-group-vertical" style="position: fixed; bottom: 1rem; right:1rem;">
+        <a id="checkout" role="button" class="btn btn-warning" th:href="@{/checkout}">
+            Checkout
+        </a>
+    </div>
+    <div class="root container">
+        <h1 class="display-4 center">Movie List</h1>
+        <p class="center">
+            <small class="text-muted">
+                remaining >= <span th:if="${movieList.size()} > 0" th:text="${movieList.get(0).getTotalNum()}">N/A</span> results
+            </small>
+        </p>
+        <form class="form-inline">
+            <select id="selectPageSize">
+                <option id="10PageSize" value = "10">10</option>
+                <option id="25PageSize" value = "25">25</option>
+                <option id="50PageSize" value = "50">50</option>
+                <option id="100PageSize" value = "100">100</option>
+            </select>
+            <select id="selectOrder">
+<!--                <option id = "titleAsc" value = "titleAsc">Title Ascending</option>-->
+<!--                <option id = "titleDesc" value = "titleDesc">Title Descending</option>-->
+<!--                <option id = "ratingAsc" value = "ratingAsc">Rating Ascending</option>-->
+<!--                <option id = "ratingDesc" value = "ratingDesc" >Rating Descending</option>-->
+            </select>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Genres</th>
+                    <th scope="col">Stars</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tr th:each="movie, outIter : ${movieList}">
+                <th scope="row" th:text="${outIter.count} + ${seqStartIdx}"></th>
+                <td>
+                    <a th:href="@{/movie/singlemovie(id=${movie.getId()})}" th:text="${movie.getTitle()}">干啥啥不行</a>
+                </td>
+                <td th:text="${movie.getYear()}">吃饭第一名</td>
+                <td th:text="(${movie.getRating()} >= 0) ? ${#numbers.formatDecimal(movie.getRating(),1,1)} : 'N/A'">0.0</td>
+                <td>
+                    <span th:each="genre,iterStat : ${movie.getGenres()}">
+                        <a th:href="@{/movie/list(genreId=${genre.getId()},limit=${limit})}" th:text="${genre.getName()}"></a>
+                        <span  th:text="${iterStat.last}? '':', '"></span>
+                    </span>
+                </td>
+                <td>
+                    <span th:each="actor,iterStat : ${movie.getActors()}">
+                        <a th:href="@{/star/singlestar(id=${actor.getId()})}" th:text="${actor.getName()}">N/A</a>
+                        <span th:text="${iterStat.last}? '':', '"> </span>
+                    </span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning cart" th:id="'cart-'+${movie.getId()}" th:data-title="${movie.getTitle()}">Add to shopping cart</button>
+                    <span></span>
+                </td>
+            </tr>
+        </table>
+        <nav aria-label="Page navigation" id="page-navigation" style="margin-bottom: 5rem;">
+            <ul class="pagination justify-content-center" id="pagenav-list" style="margin: auto">
+            </ul>
+        </nav>
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        let nowLimit = [[${limit}]];
+        let nowOffset = [[${seqStartIdx}]];
+        let maxPage = [[${maxPage}]]
+    </script>
+    <script th:src="@{/static/js/movielist.js}"></script>
+    <script th:src="@{/static/js/customer.js}"></script>
+</body>
+</html>

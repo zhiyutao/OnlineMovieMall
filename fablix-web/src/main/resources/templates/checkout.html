@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/common.css}" href="../static/css/common.css">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html;" />
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/}" href="/">Fablix</a>
+        <ul class="navbar-nav mr-auto"></ul>
+        <!--/*@thymesVar id="logged_email" type="java.lang.String"*/-->
+        <span th:text="${logged_email}" class="mx-3">email</span>
+        <a class="btn btn-outline-secondary" role="button" th:href="@{/logout}"> LOG OUT</a>
+    </nav>
+    <div class="btn-group-vertical" style="position: fixed; bottom: 1rem; right:1rem;">
+        <a id="checkout" role="button" class="btn btn-warning" href="#credit-card" >
+            Proceed to Payment
+        </a>
+    </div>
+    <div id="root-container" class="root container" th:if="${allItem != null}">
+        <h1 class="center" style="margin: 2rem 0;">Checkout</h1>
+        <div style="margin: auto;">
+            <h3 class="center">Shopping Cart</h3>
+            <table class="table" style="margin-top: 1rem; text-align: center;">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Price</th>
+
+                </tr>
+                </thead>
+                <tr th:each="movie: ${allItem}">
+                    <td>
+                        <a th:href="@{/movie/singlemovie(id=${movie.getMovieId()})}" th:text="${movie.getTitle()}">干啥啥不行</a>
+                    </td>
+                    <td>
+                        <div class="count-group" th:id="'count-' + ${movie.getMovieId()}" style="display: inline-flex">
+                            <div class="input-group-prepend">
+                                <button th:class="'btn btn-outline-secondary decrement ' + (${movie.getCount() > 1}? _ : 'disabled')" type="button">-</button>
+                            </div>
+                            <input type="number" min="1" th:value="${movie.getCount()}" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary increment" type="button">+</button>
+                                <button type="button" class="btn btn-outline-secondary delete" th:id="'delete-'+${movie.getMovieId()}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td th:with="p=${movie.getCount()} * ${movie.getSinglePrice()}">
+                        <span class="price" th:text="${#numbers.formatDecimal(p,1,2)}" th:id="'price-' + ${movie.getMovieId()}">0.0</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th >Total: <span id="totalPrice">0.0</span></th>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6" style="margin: auto;">
+            <h3 id="credit-card" class="center">Credit card information</h3>
+            <form class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label for="firstName">First Name </label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Enter first name of credit card holder" required>
+                    <div class="invalid-feedback">
+                        Invalid credit card information.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name </label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Enter last name of credit card holder" required>
+                    <div class="invalid-feedback">
+                        Invalid credit card information.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardNumber">Card Number </label>
+                    <input type="text" class="form-control" id="cardNumber" pattern="[\d\s]+" placeholder="Enter credit card number"  required>
+                    <!-- onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"-->
+                    <div class="invalid-feedback">
+                        Invalid credit card information.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="expirationDate">Expiration (YYYY-MM-DD)</label>
+                    <input class="form-control" id="expirationDate" type="text" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="YYYY-MM-DD">
+                    <div class="invalid-feedback">
+                        Invalid credit card information.
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="submitCard">Place Order</button>
+            </form>
+        </div>
+    </div>
+    <div class="root container" th:if="${allItem == null}">
+        <h3 class="center">Your shopping cart is empty!</h3>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script th:src="@{/static/js/checkout.js}"></script>
+</body>
+</html>

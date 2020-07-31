@@ -1,0 +1,27 @@
+*.class
+out/
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+keystore
+/parser-tool/src/main/resources/stanford-movies/
+/stanford-movies/
+/tomcat
+query_load.txt

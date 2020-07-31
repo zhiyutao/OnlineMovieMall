@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/common.css}" href="../static/css/common.css">
+    <title>Fablix Dashboard</title>
+    <meta http-equiv="Content-Type" content="text/html;" />
+</head>
+<body>
+<nav class="navbar sticky-top navbar-light bg-light">
+    <a class="navbar-brand" href="#">Dashboard</a>
+    <ul class="navbar-nav mr-auto"></ul>
+    <!--/*@thymesVar id="logged_email" type="java.lang.String"*/-->
+    <span th:text="${logged_email}" class="mx-3">email</span>
+    <a class="btn btn-outline-secondary" role="button" th:href="@{/logout}"> LOG OUT</a>
+</nav>
+<div class="root container">
+    <h1 class="center" style="margin: 2rem 0;">Fablix Dashboard</h1>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="metadata-tab" data-toggle="tab" href="#metadata" role="tab" aria-controls="search" aria-selected="true">Tables</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="add-star-tab" data-toggle="tab" href="#genres" role="tab" aria-controls="genres" aria-selected="false">Add star</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="add-movie-tab" data-toggle="tab" href="#alphabet" role="tab" aria-controls="alphabet" aria-selected="false">Add movie</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
+            <!-- Button trigger modal -->
+            <div class="row" style="text-align: center">
+                <div th:each="table:${tableList}" class="col-md-3" style="margin-bottom: 0.5rem; margin-top: 0.5rem">
+                    <a href="#modalCenter" class="table-link" data-toggle="modal" th:text="${table.getName()}">tablename</a>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="modalCenter" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Table metadata</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <dl id="modalData">
+
+                            </dl>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="genres" role="tabpanel" aria-labelledby="add-star-tab">
+            <form id="add-star-form" class="inner-tab">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Star's name" id="name" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" max="2020" min="1800" id="year" class="form-control" placeholder="Year (1800-2020)">
+                    </div>
+                </div>
+                <div class="row" style="margin-top:1rem;">
+                    <div class="col">
+                        <button type="button" class="add btn btn-primary" style="width: 100%;" id="addStar">Add Star</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="tab-pane" id="alphabet" role="tabpanel" aria-labelledby="add-movie-tab">
+            <form id="add-movie-form" class="inner-tab">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Movie's title" id="movieTitle" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" max="2020" min="1800" id="movieYear" class="form-control" placeholder="Year (1800-2020)" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Movie's Director" id="movieDirector" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Movie's Actor" id="starName" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Movie's Genre" id="genreName" required>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:1rem;">
+                    <div class="col">
+                        <button type="button" class="add btn btn-primary" style="width: 100%;" id="addMovie">Add Movie</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script th:src="@{/static/js/dashboard.js}"></script>
+</body>
+</html>

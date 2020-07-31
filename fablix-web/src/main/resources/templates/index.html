@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/common.css}" href="../static/css/common.css">
+    <title>Fablix</title>
+    <meta http-equiv="Content-Type" content="text/html;" />
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <a class="navbar-brand" href="#">Fablix</a>
+        <ul class="navbar-nav mr-auto"></ul>
+        <!--/*@thymesVar id="logged_email" type="java.lang.String"*/-->
+        <span th:text="${logged_email}" class="mx-3">email</span>
+        <a class="btn btn-outline-secondary" role="button" th:href="@{/logout}"> LOG OUT</a>
+    </nav>
+    <div class="btn-group-vertical" style="position: fixed; bottom: 1rem; right:1rem;">
+        <a id="checkout" role="button" class="btn btn-warning" th:href="@{/checkout}">
+            Checkout
+        </a>
+    </div>
+    <div class="root container">
+        <h1 class="center" style="margin: 2rem 0;">Fablix</h1>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="search-tab" data-toggle="tab" href="#search" role="tab" aria-controls="search" aria-selected="true">Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="genres-tab" data-toggle="tab" href="#genres" role="tab" aria-controls="genres" aria-selected="false">genres</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="alphabet-tab" data-toggle="tab" href="#alphabet" role="tab" aria-controls="alphabet" aria-selected="false">alphabet</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="search" role="tabpanel" aria-labelledby="search-tab">
+                <form id="search-form" class="inner-tab" action="/movie/list">
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Movie's title" name="title" id="title">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Actor's name" name="actor">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Director" name="director">
+                        </div>
+                        <div class="col">
+                            <input type="number" max="2021" min="1800" name="year" class="form-control" placeholder="Year (1800-2021)">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:1rem;">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary" id="doSearch" style="width: 100%;">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="genres" role="tabpanel" aria-labelledby="genres-tab">
+                <div class="inner-tab row">
+                    <div class="col-md" th:each="genreSublist : ${genres}">
+                        <ul class="list-unstyled text-small">
+                            <li th:each="genre : ${genreSublist}">
+                                <a th:href="@{/movie/list(genreId=${genre.getId()})}" th:text="${genre.getName()}">好累...</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="alphabet" role="tabpanel" aria-labelledby="alphabet-tab">
+                <div class="inner-tab row">
+                    <div class="col-md" th:each="charSublist : ${chars}">
+                        <ul class="list-unstyled text-small">
+                            <li th:each="char : ${charSublist}">
+                                <a th:href="@{/movie/list(initial=${char})}" th:text="${char}">好累...</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/movie/list}">go to movie list page</a>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script th:src="@{/static/js/index.js}"></script>
+</body>
+</html>

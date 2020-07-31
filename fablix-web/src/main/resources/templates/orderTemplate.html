@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="order_refresh">
+        <h1 class="center" style="margin: 2rem 0;">Your order is confirmed!</h1>
+        <div style="margin: auto;">
+            <h3 class="center">Order details</h3>
+            <table class="table" style="margin-top: 1rem; text-align: center;">
+                <thead>
+                <tr>
+                    <th scope="col">#Order</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Price</th>
+                </tr>
+                </thead>
+                <tr th:each="movie, iterStat: ${shoppingCarts}">
+                    <th th:text="${iterStat.index} + ${beginOrderNumber}" scope="row">1</th>
+                    <td>
+                        <a th:href="@{/movie/singlemovie(id=${movie.getMovieId()})}" th:text="${movie.getTitle()}">干啥啥不行</a>
+                    </td>
+                    <td th:text="${movie.getCount()}">
+                        0
+                    </td>
+                    <td th:with="p=${movie.getCount()} * ${movie.getSinglePrice()}">
+                        <span class="price" th:text="${#numbers.formatDecimal(p,1,2)}" th:id="'price-' + ${movie.getMovieId()}">0.0</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th >Total: <span id="totalPrice">0.0</span></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
